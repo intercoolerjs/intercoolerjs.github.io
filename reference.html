@@ -64,7 +64,7 @@
       return params;
     }
   </script>
-  <script type="text/javascript" src="/release/intercooler-1.2.1.js"></script>
+  <script type="text/javascript" src="/release/intercooler-1.2.2.js"></script>
 </head>
 
 <body>
@@ -135,7 +135,7 @@
 
             <tr>
               <td><a href="/attributes/ic-action-target.html">ic-action-target</a></td>
-	      <td>This attribute allows you to change the target of a <code>ic-action</code> attribute </td>
+              <td>This attribute allows you to change the target of a <code>ic-action</code> attribute </td>
             </tr>
 
             <tr>
@@ -175,7 +175,7 @@
             <tr>
               <td><a href="/attributes/ic-deps.html">ic-deps</a></td>
               <td>This attribute allows you to express additional path dependencies for a given element, beyond the
-                <a href="dependencies.html#implied">implied ones</a>.</td>
+                <a href="docs.html#dependencies">implied ones</a>.</td>
             </tr>
 
             <tr>
@@ -186,6 +186,12 @@
             <tr>
               <td><a href="/attributes/ic-disable-when-doc-inactive.html">ic-disable-when-doc-inactive</a></td>
               <td>Disables requests when a document is inactive, that is it does not have focus (e.g. for polling)</td>
+            </tr>
+
+            <tr>
+              <td><a href="/attributes/ic-enhance.html">ic-enhance</a></td>
+              <td>This attribute tells intercooler to enhance all anchor tags and form tags that it founds, adding
+              the equivalent AJAX functionality to them.</td>
             </tr>
 
             <tr>
@@ -207,6 +213,12 @@
               <td>This attribute can be used to add data to all requests made by Intercooler</td>
             </tr>
 		  
+            <tr>
+              <td><a href="/attributes/ic-global-indicator.html">ic-global-indicator</a></td>
+              <td>This attribute tells Intercooler to show the specified global intercooler, in addition to whatever local
+              indicators an element might want shown.</td>
+            </tr>
+
             <tr>
               <td><a href="/attributes/ic-history-elt.html">ic-history-elt</a></td>
               <td>This attribute attribute tells intercooler the element to take a snapshot of when storing history entries, as well as the element to restore history snapshots into.</td>
@@ -392,6 +404,13 @@
               <td><a href="/attributes/ic-swap-style.html">ic-swap-style</a></td>
               <td>Allows you to specify the swap mechanism that intercooler will use with content received from the
               server</td>
+            </tr>
+
+            <tr>
+              <td><a href="/attributes/ic-switch-class.html">ic-switch-class</a></td>
+              <td>Allows you to swap a class amongst sibling elements in a DOM when an intercooler event is triggered.
+              This can be used, for example, to switch an <code>active</code> class between tabs without replacing
+              the HTML.</td>
             </tr>
 
             <tr>
@@ -668,7 +687,23 @@
         <code>X-IC-Title</code>
       </td>
       <td>
-        Sets the title of the page/document to the given header value.
+        Sets the title of the page/document to the given header value. Please note that only ASCII characters are guaranteed to work. 
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>X-IC-Title-Encoded</code>
+      </td>
+      <td>
+        The same as <code>X-IC-Title</code> but the value is expected to be URI encoded
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>X-IC-Title-Encoded</code>
+      </td>
+      <td>
+        URI decodes the given header value and sets the title of the page/document to the decoded value. Use this header if you need to show UTF-8 characters in the title.
       </td>
     </tr>
     <tr>
@@ -920,12 +955,18 @@
 
     <tr>
       <td>
-        <code>Intercooler.debug()</code>
+        <code>LeadDyno.startPolling(elt)</code>
       </td>
-      <td>
-        Launch the client-side debugger
-      </td>
+      <td>Begins polling for the given element</td>
     </tr>
+
+    <tr>
+      <td>
+        <code>LeadDyno.stopPolling(elt)</code>
+      </td>
+      <td>Stops polling for the given element</td>
+    </tr>
+
 
   </tbody>
 </table>
@@ -971,7 +1012,7 @@
   <hr>
   <footer>
     <p>
-      &copy; <a href="http://intercoolerjs.org">IntercoolerJS.org</a> 2013-2018
+      &copy; <a href="http://intercoolerjs.org">IntercoolerJS.org</a> 2013-2019
     </p>
   </footer>
 </div>
