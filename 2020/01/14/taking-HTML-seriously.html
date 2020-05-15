@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="shortcut icon" href="/images/Intercooler_CMYK_noType_ico.png">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Simple AJAX using HTML attributes">
+  <meta name="author" content="Carson Gross">
+
+  <meta property="og:title" content="Simple AJAX using HTML attributes"/>
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="http://intercoolerjs.org"/>
+  <meta property="og:site_name" content="Intercooler.js"/>
+  <meta property="og:image" content="http://intercoolerjs.org/images/Intercooler_CMYK_noType_ico.png" />
+
+  
+  <title>Taking HTML Seriously</title>
+  
+
+  <!-- Bootstrap core CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Crete+Round:400italic,400" rel="stylesheet" type="text/css">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,300,400italic,400,600italic,600,700italic,700,800italic,800"
+    rel="stylesheet" type="text/css">
+  <link href="/css/site.css" rel="stylesheet" type="text/css">
+
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+  <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/release/lib/jquery.mockjax-2.2.1.js"></script>
+  <script>
+    $.mockjaxSettings['responseTime'] = 100;
+    // Taken from https://gist.github.com/kares/956897
+    function parseParams(str) {
+      var re = /([^&=]+)=?([^&]*)/g;
+      var decode = function (str) {
+        return decodeURIComponent(str.replace(/\+/g, ' '));
+      };
+      var params = {}, e;
+      if (str) {
+        if (str.substr(0, 1) == '?') {
+          str = str.substr(1);
+        }
+        while (e = re.exec(str)) {
+          var k = decode(e[1]);
+          var v = decode(e[2]);
+          if (params[k] !== undefined) {
+            if (!$.isArray(params[k])) {
+              params[k] = [params[k]];
+            }
+            params[k].push(v);
+          } else {
+            params[k] = v;
+          }
+        }
+      }
+      return params;
+    }
+  </script>
+  <script type="text/javascript" src="/release/intercooler-1.2.3.js"></script>
+</head>
+
+<body>
+
+    <div class="container">
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">intercooler<span class="intercooler-dot">.</span><span class="intercooler-js">js</span></a>
+          </div>
+          <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li class=""><a href="/docs.html">Guide</a></li>
+              <li class=""><a href="/examples/index.html">Examples</a></li>
+              <li class=""><a href="/reference.html">Reference</a></li>
+              <li class="active" class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Talk <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="mailto:intercoolerjs@gmail.com?subject=intercooler.js Consulting">Consulting Contact</a></li>
+                  <li><a href="https://gitter.im/intercooler-js/Lobby" target="_blank">Gitter</a></li>
+                  <li><a href="https://groups.google.com/forum/#!forum/intercooler-js" target="_blank">Newsgroup</a></li>
+                  <li><a href="https://github.com/intercoolerjs/intercooler-js/issues" target="_blank">Bugs</a></li>
+                  <li><a href="/blog.html">Blog</a></li>
+                </ul>
+              </li>
+              <li class=""><a href="/download.html">Download</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="https://github.com/intercoolerjs/intercooler-js"><i class="fa fa-github"></i></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<div class="body-wrapper">
+  <div class="container">
+
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+
+      <h1 class="blog-title">Taking HTML Seriously<br/> <small>14 January 2020</small></h1>
+
+      <hr/>
+
+      <section class="blog-section">
+        <h2 id="html-the-water-we-swim-in">HTML, The Water We Swim In</h2>
+
+<p>HTML isn’t often discussed as a technology in it’s own right these days.  This isn’t because it has fallen out of use, of
+course, but rather because it is ubiquitous.  <a href="https://sivers.org/fish">“Fish don’t know they’re in water.”</a></p>
+
+<p>Because it is so ubiquitous (and maybe because it is so easy) it is unappreciated.  Or, at least, under-appreciated.  I’d
+like to start this new decade by taking a look back at this technology and, in particular, <a href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a>.
+REST is <a href="https://en.wikipedia.org/wiki/Roy_Fielding">Roy Fielding</a>’s technical description of the new web architecture, of
+which HTML, as a hypertext, was a crucial component.</p>
+
+<p>If you are familiar with REST, you have probably heard of it discussed in a JSON API context, rather than in an HTML web application 
+context.  This is unfortunate, because it obscures what REST is.  Let’s look at the idea of REST (and <a href="https://en.wikipedia.org/wiki/HATEOAS">HATEOAS</a>) 
+in its native format: some HTML, displaying a simple data record (in this case, a contact.)</p>
+
+<pre>
+  &lt;div&gt;
+    &lt;div&gt;
+      Name: Joe Blow
+    &lt;/div&gt;
+    &lt;div&gt;
+      Email: joe@blow.com
+    &lt;/div&gt;
+    &lt;div&gt;
+      &lt;a href="/contacts/42/edit"&gt;Edit&lt;/a&gt;
+      &lt;a href="/contacts/42/email"&gt;Email&lt;/a&gt;
+      &lt;a href="/contacts/42/archive"&gt;Archive&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+</pre>
+
+<p>This should be easy to understand &amp; pedestrian HTML for web developers.  So, what makes this HTML/hypertext
+special?  The answer is also simple: this bit of HTML encodes both the data
+about the contact <strong>as well as the actions available on that data</strong>, in the form of hyperlinks.</p>
+
+<p>Contrast this with a thick client, such as a standard mobile application. For a standard thick client a specific “Contacts” screen 
+must be built, with the actions on that data already encoded into the UI. The UI simply retrieves the data and then 
+renders it locally, with the actions defined locally.  To do something new you will need a new version of the application.</p>
+
+<p>In the HTML example, all the data <strong>and actions</strong> on the data are encoded in the hypertext.  The client (a browser) doesn’t
+know anything about the data, it just knows how to render hypertext.   A technical way to say this is that we are using 
+ Hypertext As The Engine Of the Application State.  This is where the acronym HATEOAS came from.</p>
+
+<h2 id="state-of-the-art-today-json">State of The Art Today: JSON</h2>
+
+<p>Today many people are building web applications that re-introduce the thick client model into web development.<br />
+They use react or a similar technology that then speaks to a JSON-based data API.</p>
+
+<p>The JSON APIs often ape REST-ful conventions.  Some even try to implement HATEOAS. This is a category error: JSON is not 
+a hypertext and, therefore, it is unnatural, difficult and, typically, pointless to build a REST-ful API using it.<br />
+Developers find it <a href="https://www.jeffknupp.com/blog/2014/06/03/why-i-hate-hateoas/">frustrating</a>, and 
+<a href="https://roy.gbiv.com/untangled/2008/rest-apis-must-be-hypertext-driven">Roy does too</a>.</p>
+
+<h2 id="the-fatal-flaw-of-html">The Fatal Flaw of HTML</h2>
+
+<p>So how did we end up here, shoe-horning REST/HATEOAS from it’s natural environment (HTML/Hypertext) into JSON apis?</p>
+
+<p>To answer that, we need to answer why people started using JSON and client side heavy javascript in the first place.</p>
+
+<p>The harsh reality is that HTML never got to the point that it could, by itself, offer UX approaching the 
+thick client.   Pure server-side rendered HTML offered only a simple &amp; clunky 
+Click → Request → Page Render model.  For reasons I can’t completely understand, HTML never moved beyond 
+this extremely basic UX model.</p>
+
+<p>Developers and users, understandably, wanted better usability than that.  Developers reached for the only tool 
+available: javascript and AJAX.  This was a pragmatic move, but unfortunately it made REST difficult and tedious, rather 
+than natural and helpful.</p>
+
+<p>## Some HTML-Oriented Solutions</p>
+
+<p>There are a few against-the-grain libraries that address this problem from within the context of the original, HTML driven model: 
+<a href="https://github.com/turbolinks/turbolinks">Turbolinks</a>, <a href="https://github.com/defunkt/jquery-pjax">pjax</a> and 
+<a href="http://intercoolerjs.org/">intercooler.js</a> are the three I am most familiar with.  All of them use HTML, rather than JSON
+for their client/server communication, and all of them address the clunkiness the Click → Request → Page Render model.</p>
+
+<p>With intercooler, in particular, I tried to stay as close to the original HTML model as possible, using hypertext attributes to drive 
+everything,  while opening up the remainder of the web architecture (e.g. AJAX, various DOM events, various HTTP Actions.)<br />
+You can see what pure (or nearly pure) HTML <a href="http://intercoolerjs.org/examples/index.html">can accomplish with intercooler here</a>.</p>
+
+<p>It isn’t perfect for every application, but you might try it out and see how it goes.  You might be surprised at how
+much it can simplify your web application development environment, and how natural the original REST architecture
+feels once you get back into it.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>HTML was a crucial aspect of the original model of the web, not just on the client side, but at the network data
+format level.  Many developers now view HTML as a client-side only language and are unaware of the benefits of using it 
+for a network format.  I hope after reading this article you better appreciate the difference between JSON and HTML
+in terms of REST and why you might want to try using HTML as your application’s network data format.</p>
+
+<p>HTML is pretty cool.</p>
+
+<h2 id="further-reading">Further Reading</h2>
+
+<p>Intercooler is a slow-moving project.  It works reasonably well and I plan on gentle evolution going forward.
+Since there isn’t constant activity and point releases on it, it’s easy to think it’s a dead or dormant project, but
+it isn’t: it is being used by quite a few people, very happily.</p>
+
+<p>If you liked this article, you might find the following older posts interesting:</p>
+
+<ul>
+  <li><a href="http://intercoolerjs.org/2016/01/18/rescuing-rest.html">‘Rescuing REST’</a></li>
+  <li><a href="http://intercoolerjs.org/2016/05/08/hatoeas-is-for-humans.html">‘HATEOAS is for Humans’</a></li>
+  <li><a href="http://intercoolerjs.org/2016/02/17/api-churn-vs-security.html">‘API Churn vs. Security</a></li>
+</ul>
+
+<p>Instawork <a href="https://engineering.instawork.com/iterating-with-simplicity-evolving-a-django-app-with-intercooler-js-8ed8e69d8a52">liked intercooler so much</a>
+they went ahead and built a similar (and far more advanced!) technology for mobile development:</p>
+
+<ul>
+  <li><a href="https://hyperview.org">https://hyperview.org</a></li>
+</ul>
+
+<hr/>
+<section>
+  <h3><em><i class="fa fa-bullhorn"></i> | The Comments Section |</em></h3>
+  <div id="disqus_thread"></div>
+</section>
+<script>
+  /**
+   * RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+   * LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+   */
+  /*
+   var disqus_config = function () {
+   this.page.url = PAGE_URL; // Replace PAGE_URL with your page's canonical URL variable
+   this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+   };
+   */
+  (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+
+    s.src = '//intercoolerjs.disqus.com/embed.js';
+
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+      </section>
+    </div>
+    <div class="col-md-2"></div>
+  </div>
+</div>
+</div>
+
+<div class="container">
+  <hr>
+  <footer>
+    <p>
+      &copy; <a href="http://intercoolerjs.org">IntercoolerJS.org</a> 2013-2020
+    </p>
+  </footer>
+</div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-20364649-2', 'intercoolerjs.org');
+  ga('send', 'pageview');
+</script>
+<script>
+  $('pre').addClass('prettyprint');
+</script>
+<script src="/js/google-code-prettify/run_prettify.js?lang=css&skin=desert"></script>
+</body>
+</html>
